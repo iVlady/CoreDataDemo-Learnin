@@ -81,21 +81,9 @@ final class TaskListViewController: UITableViewController {
         } catch let error {
             print(error.localizedDescription)
         }
+        
+        
     }
-    
-//    private func deleteRequest() {
-//        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
-//        if let objects = try? viewContext.fetch(fetchRequest) {
-//            for object in objects {
-//                viewContext.delete(object)
-//            }
-//        }
-//        do {
-//            try viewContext.save()
-//        } catch let error as NSError {
-//            print(error.localizedDescription)
-//        }
-//    }
 }
 
 extension TaskListViewController {
@@ -119,37 +107,13 @@ extension TaskListViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
-            let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//            let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
-            viewContext.delete(tasks[indexPath.row])
             
-            do {
-                try viewContext.save()
-            } catch
-                let error {
-                print(error.localizedDescription)
-            }
-            
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            let singleTask = tasks[indexPath.row]
             tasks.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+            DataManager.shared.deleteData(singleTask: singleTask)
             
         }
-        
-//        if editingStyle == .delete {
-//
-//            let taskToDelete = self.tasks[indexPath.row]
-//
-//            tableView.deleteRows(at: [indexPath], with: .middle)
-//            tasks.remove(at: indexPath.row)
-//            viewContext.delete(taskToDelete)
-//
-//            if viewContext.hasChanges {
-//                do {
-//                    try viewContext.save()
-//                } catch let error {
-//                    print(error)
-//                }
-//            }
-//        }
     }
 }
